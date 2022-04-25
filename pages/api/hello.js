@@ -21,7 +21,7 @@ app.post("/login", (req, res) => {
     getAkun(username, password,(user)=>{
         // user = user.username
         // password = user.password
-        if (user) {
+        if(user) {
             res.send({"status": "berhasil","username":user.username});
         } else {
             res.send({"status": "gagal"});
