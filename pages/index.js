@@ -16,7 +16,7 @@ export default function Home() {
       <Layout
         page={'go-whatever'}
         description={
-          'You can drive and travel wherever and whenever you desire, and eat anything you want without leaving your house!'
+          'You can drive and travel wherever and whenever you desire, and eat anything you want without leaving your house.'
         }
       ></Layout>
     </Fragment>

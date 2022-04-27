@@ -1,6 +1,6 @@
 import Head from 'next/head'
 
-
+import { MongoClient } from 'mongodb'
 import { useRouter } from 'next/router'
 
 import Layout from '../../components/Layout'
@@ -47,11 +47,20 @@ export default function GoFood(props) {
 }
 
 export async function getStaticProps() {
-  const data = await fetch("https://project-uts.vercel.app/api/getRestaurant");
-  const restaurants = await data.json();
+  const client = await MongoClient.connect(
+    'mongodb+srv://adminclone:adminclone@cluster0.cr4db.mongodb.net/db_gojek?retryWrites=true&w=majority'
+  )
+  const db = client.db()
+  const collections = db.collection('go_food')
+  const restaurants = await collections.find().toArray()
+  client.close()
+
   return {
     props: {
-      restaurants: restaurants.map((item) => (console.log(item.name))),
+      restaurants: restaurants.map((item) => ({
+        id: item._id.toString(),
+        name: item.restaurant,
+      })),
     },
     revalidate: 1,
   }
