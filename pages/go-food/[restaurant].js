@@ -73,7 +73,7 @@ export async function getStaticProps(context) {
 
   return {
     props: {
-      data: { ...result, _id: result._id.toString() },
+      data: { ...result},
     },
     revalidate: 1,
   }
