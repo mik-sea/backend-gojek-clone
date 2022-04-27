@@ -38,16 +38,17 @@ export default function RestaurantDetail(props) {
 }
 
 export async function getStaticPaths() {
-  const client = await MongoClient.connect(
-    'mongodb+srv://adminclone:adminclone@cluster0.cr4db.mongodb.net/db_gojek?retryWrites=true&w=majority'
-  )
-  const db = client.db()
-  const collections = db.collection('go_food')
-  const restaurants = await collections.find({}, { _id: 1 }).toArray()
-  client.close()
-
+  // const client = await MongoClient.connect(
+  //   'mongodb+srv://adminclone:adminclone@cluster0.cr4db.mongodb.net/db_gojek?retryWrites=true&w=majority'
+  // )
+  // const db = client.db()
+  // const collections = db.collection('go_food')
+  // const restaurants = await collections.find({}, { _id: 1 }).toArray()
+  // client.close()
+  const data = await fetch("https://project-uts.vercel.app/api/getRestaurant");
+  const restaurants = await data.json();
   const paths = restaurants.map((item) => ({
-    params: { restaurant: item.restaurant },
+    params: { restaurant: item.name },
   }))
 
   return {
@@ -59,13 +60,16 @@ export async function getStaticPaths() {
 export async function getStaticProps(context) {
   const restaurant = context.params.restaurant
 
-  const client = await MongoClient.connect(
-    'mongodb+srv://adminclone:adminclone@cluster0.cr4db.mongodb.net/db_gojek?retryWrites=true&w=majority'
-  )
-  const db = client.db()
-  const collections = db.collection('go_food')
-  const result = await collections.findOne({ restaurant: restaurant })
-  client.close()
+  // const client = await MongoClient.connect(
+  //   'mongodb+srv://adminclone:adminclone@cluster0.cr4db.mongodb.net/db_gojek?retryWrites=true&w=majority'
+  // )
+  // const db = client.db()
+  // const collections = db.collection('go_food')
+  // const result = await collections.findOne({ restaurant: restaurant })
+  // client.close()
+  const data = await fetch(`https://project-uts.vercel.app/api/menu/${restaurant}`);
+  const result = await data.json();
+  // console.log(restaurant)
 
   return {
     props: {
