@@ -60,20 +60,20 @@ export async function getStaticPaths() {
 export async function getStaticProps(context) {
   const restaurant = context.params.restaurant
 
-  // const client = await MongoClient.connect(
-  //   'mongodb+srv://adminclone:adminclone@cluster0.cr4db.mongodb.net/db_gojek?retryWrites=true&w=majority'
-  // )
-  // const db = client.db()
-  // const collections = db.collection('go_food')
-  // const result = await collections.findOne({ restaurant: restaurant })
-  // client.close()
-  const data = await fetch(`https://project-uts.vercel.app/api/menu/${restaurant}`);
-  const result = await data.json();
+  const client = await MongoClient.connect(
+    'mongodb+srv://adminclone:adminclone@cluster0.cr4db.mongodb.net/db_gojek?retryWrites=true&w=majority'
+  )
+  const db = client.db()
+  const collections = db.collection('go_food')
+  const result = await collections.findOne({ restaurant: restaurant })
+  client.close()
+  // const data = await fetch(`https://project-uts.vercel.app/api/menu/${restaurant}`);
+  // const result = await data.json();
   // console.log(restaurant)
 
   return {
     props: {
-      data: { ...result},
+      data: { ...result, _id: result._id.toString() },
     },
     revalidate: 1,
   }
